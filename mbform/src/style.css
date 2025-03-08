@@ -1,36 +1,33 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #f3f4f4;
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 2rem;
+  line-height: 130%;
+  letter-spacing: 0px;
+  color: #e8550c;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-weight: 700;
+}
+h2 {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 118%;
+  letter-spacing: .18px;
 }
 
 button {
@@ -40,20 +37,16 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #e8550c;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #c5490b;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-.card {
-  padding: 2em;
 }
 
 #app {
@@ -63,15 +56,19 @@ button:focus-visible {
   text-align: center;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.main-content {
+  max-width: 360px;
+  margin: 50px auto 0 auto;
+  text-align: left;
+}
+.mbc-form {
+  color: #1d2327;
+  letter-spacing: .5px;
+  padding: 0;
+}
+.steps {
+  font-weight: 300;
+}
+strong {
+  color: #e8550c;
 }
