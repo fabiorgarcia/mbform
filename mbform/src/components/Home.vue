@@ -1,11 +1,16 @@
 <script setup>
 
-  import { ref, computed } from 'vue';
+  import { ref, computed, onMounted, reactive } from 'vue';
+  import Loading from './Loading.vue';
+  import Sucess from './Sucess.vue';
 
   defineProps({
     msg: String,
   })
 
+  let resdata = reactive
+  const sucessMsg = ref(false)
+  const loadingData = ref(true)
   const currentStep = ref(1)
   const email = ref(null)
   const emailError = ref(false)
@@ -29,8 +34,24 @@
   const telephoneCorporateError = ref(false)
   const password = ref(null)
   const passwordError = ref(false)
-  
 
+  onMounted (()=>{
+    fetch("https://pokeapi.co/api/v2/pokemon?limit=151&offset=0")
+    .then(res => res.json())
+    .then(res => {
+      resdata =  res.results
+      setTimeout(closeLoading, 1500)
+    })
+  })
+
+  function loadingSuces() {
+    loadingData.value = false;
+    sucessMsg.value = true;
+  }
+  
+  function closeLoading() {
+    loadingData.value = false;
+  }
 
   const validateStep1 = computed(()=>{
     !isEmail(email.value) ? emailError.value = true : emailError.value = false
@@ -140,11 +161,21 @@
     return true
   }
 
+  const registerData = computed(()=>{
+    loadingData.value = true;
+    setTimeout(loadingSuces, 4000)
+  })
+  
+
 
   
 </script>
 
 <template>
+
+  <Sucess v-show="sucessMsg"></Sucess>
+  <Loading v-show="loadingData"></Loading>
+
   <h1>{{ msg }}</h1>
 
   <div class="main-content">
@@ -243,8 +274,8 @@
         </div>
 
         <div class="form-input form-buttons" v-show="currentStep == '4'">
-          <button class="back-button" @click="currentStep = 1">Voltar</button>
-          <button type="submit" >Cadastrar</button>
+          <button type="button" class="back-button" @click="currentStep = 1">Voltar</button>
+          <button type="button" @click="registerData">Cadastrar</button>
         </div>
 
       </section>
