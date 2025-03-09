@@ -22,6 +22,7 @@
     border: 10px solid var(--light-orange);
     border-top-color: #ffffff;
     animation: loading 1s linear infinite;
+    margin-top: -60px;
   }
   @keyframes loading {
     to {
