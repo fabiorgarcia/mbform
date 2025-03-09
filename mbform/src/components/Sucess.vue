@@ -19,7 +19,7 @@
       <polyline id="check" stroke="#e8550c" stroke-width="4" points="41 70 56 85 92 49"></polyline>
     </g>
   </svg>
-  <h2>Dados enviado com sucesso!</h2>
+  <h2>Dados enviados com sucesso!</h2>
 </div>
 
   

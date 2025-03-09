@@ -19,8 +19,24 @@ const servicecontroller = {
                 password: req.body.password
             }
 
-            const response = 'ok';
-            res.json({ response, msg: "Serviço criado com sucesso!"})
+            //Validates fields
+            if (service.naturalLegalPerson == 'natural') {
+                if (service.email && service.name && service.cpf && service.birth && service.telephone && service.password ) {
+                    res.json({ service, msg: "Service created successfully!"})
+                } else {
+                    res.json({ service, msg: "Error. Invalid fields."})
+                }
+            } else if (service.naturalLegalPerson == 'person') {
+                if (service.email && service.corporate && service.cnpj && service.opening && service.telephoneCorporate && service.password ) {
+                    res.json({ service, msg: "Service created successfully!"})
+                } else {
+                    res.json({ service, msg: "Error. Invalid fields."})
+                }
+            } else {
+                const responseOk = 'ok';
+                res.json({ responseOk, msg: "Service created successfully!"})
+            }
+
 
         } catch (error) {
             console.log(error)

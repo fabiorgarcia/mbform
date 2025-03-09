@@ -35,15 +35,21 @@
   const password = ref(null)
   const passwordError = ref(false)
 
-  onMounted (()=>{
-    fetch("http://localhost:3000/api/services")
+  const state = reactive({
+      test: null,
+    });
+
+  onMounted (async ()=>{
+    await fetch("http://localhost:3000/api/services")
     .then(res => res.json())
     .then(res => {
-      resdata =  res.msg
+      resdata =  res
       console.log(resdata)
       setTimeout(closeLoading, 1500)
     })
   })
+
+
 
   function loadingSuces() {
     loadingData.value = false;
@@ -74,7 +80,6 @@
       !telephoneCorporate.value ? telephoneCorporateError.value = true : telephoneCorporate.value.length < 13 ? telephoneCorporateError.value = true : telephoneCorporateError.value = false
       if (!corporateError.value && !cnpjError.value && !openingError.value && !telephoneCorporateError.value) currentStep.value = 3
     }
-    
   })
 
   const validateStep3 = computed(()=>{
@@ -163,11 +168,56 @@
   }
 
   const registerData = computed(()=>{
-    loadingData.value = true;
-    setTimeout(loadingSuces, 4000)
-  })
-  
 
+    !isEmail(email.value) ? emailError.value = true : emailError.value = false;
+    !naturalLegalPerson.value ? naturallegalPersonError.value = true : naturallegalPersonError.value = false;
+    if (naturalLegalPerson.value == 'natural') {
+      !name.value ? nameError.value = true : nameError.value = false
+      !cpf.value ? cpfError.value = true : !isCpf(cpf.value.replace(/[^0-9]/g,'')) ? cpfError.value = true : cpfError.value = false 
+      !birth.value ? birthError.value = true : isDate(birth.value) ? birthError.value = true : birthError.value = false 
+      !telephone.value ? telephoneError.value = true : telephone.value.length < 13 ? telephoneError.value = true : telephoneError.value = false
+    } else {
+      !corporate.value ? corporateError.value = true : corporateError.value = false
+      !cnpj.value ? cnpjError.value = true : !isCnpj(cnpj.value.replace(/[^0-9]/g,'')) ? cnpjError.value = true : cnpjError.value = false 
+      !opening.value ? openingError.value = true : isDate(opening.value) ? openingError.value = true : openingError.value = false 
+      !telephoneCorporate.value ? telephoneCorporateError.value = true : telephoneCorporate.value.length < 13 ? telephoneCorporateError.value = true : telephoneCorporateError.value = false
+    }
+    !password.value ? passwordError.value = true : passwordError.value = false;
+
+    if (!emailError.value && !naturallegalPersonError.value && !nameError.value && !cpfError.value && !birthError.value && !telephoneError.value && !corporateError.value && !cnpjError.value && !openingError.value && !telephoneCorporateError.value) {
+      loadingData.value = true;
+
+      fetch('http://localhost:3000/api/services', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.value,
+          naturalLegalPerson: naturalLegalPerson.value,
+          name: name.value,
+          cpf: cpf.value,
+          birth: birth.value,
+          telephone: telephone.value,
+          corporate: corporate.value,
+          cnpj: cnpj.value,
+          opening: opening.value,
+          telephoneCorporate: telephoneCorporate.value,
+          password: password.value
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+          setTimeout(loadingSuces, 4000)
+        })
+        .catch(error => {
+        console.log(error)
+        }) 
+      
+    }
+  
+  })
 
   
 </script>
@@ -270,12 +320,12 @@
         </div>
 
         <div class="form-input form-buttons" v-show="currentStep == '3'">
-          <button class="back-button" @click="currentStep = 1">Voltar</button>
+          <button class="back-button" @click="currentStep = 2">Voltar</button>
           <button type="button" @click="validateStep3">Continuar</button>
         </div>
 
         <div class="form-input form-buttons" v-show="currentStep == '4'">
-          <button type="button" class="back-button" @click="currentStep = 1">Voltar</button>
+          <button type="button" class="back-button" @click="currentStep = 3">Voltar</button>
           <button type="button" @click="registerData">Cadastrar</button>
         </div>
 
