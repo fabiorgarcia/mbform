@@ -36,10 +36,11 @@
   const passwordError = ref(false)
 
   onMounted (()=>{
-    fetch("https://pokeapi.co/api/v2/pokemon?limit=151&offset=0")
+    fetch("http://localhost:3000/api/services")
     .then(res => res.json())
     .then(res => {
-      resdata =  res.results
+      resdata =  res.msg
+      console.log(resdata)
       setTimeout(closeLoading, 1500)
     })
   })
