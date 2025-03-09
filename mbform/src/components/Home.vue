@@ -35,9 +35,6 @@
   const password = ref(null)
   const passwordError = ref(false)
 
-  const state = reactive({
-      test: null,
-    });
 
   onMounted (async ()=>{
     await fetch("http://localhost:3000/api/services")
@@ -48,7 +45,6 @@
       setTimeout(closeLoading, 1500)
     })
   })
-
 
 
   function loadingSuces() {
@@ -184,7 +180,7 @@
     }
     !password.value ? passwordError.value = true : passwordError.value = false;
 
-    if (!emailError.value && !naturallegalPersonError.value && !nameError.value && !cpfError.value && !birthError.value && !telephoneError.value && !corporateError.value && !cnpjError.value && !openingError.value && !telephoneCorporateError.value) {
+    if (!emailError.value && !naturallegalPersonError.value && !nameError.value && !cpfError.value && !birthError.value && !telephoneError.value && !corporateError.value && !cnpjError.value && !openingError.value && !telephoneCorporateError.value && !passwordError.value ) {
       loadingData.value = true;
 
       fetch('http://localhost:3000/api/services', {
@@ -219,13 +215,32 @@
   
   })
 
+  function returnStep(x) {
+    currentStep.value = x
+    const oldEmail = email.value;
+    email.value = '';
+    email.value = oldEmail;
+
+    const oldName = name.value;
+    name.value = '';
+    name.value = oldName;
+
+    const oldCorporate = corporate.value;
+    corporate.value = '';
+    corporate.value = oldCorporate;
+
+    const oldPassword = password.value;
+    password.value = '';
+    password.value = oldPassword;
+  }
+
   
 </script>
 
 <template>
 
   <Sucess v-show="sucessMsg"></Sucess>
-  <Loading v-show="loadingData"></Loading>
+  <Loading v-show="loadingData" class="fade-in"></Loading>
 
   <h1>{{ msg }}</h1>
 
@@ -235,7 +250,7 @@
         <p>Etapa <span class=""><strong>{{ currentStep }}</strong> de 04</span></p>
       </div>
       
-      <section v-if="currentStep == '1' || currentStep == '4'">
+      <section v-if="currentStep == '1' || currentStep == '4'" class="fade-in">
         <h2 v-show="currentStep == '1'">Seja Bem-vindo(a)</h2>
         <h2 v-show="currentStep == '4'">Revise suas informações</h2>
         <div id="email" class="form-input">
@@ -253,7 +268,7 @@
         </div>
       </section>
 
-      <section v-if="(currentStep == '2' && naturalLegalPerson == 'natural') || (currentStep == '4' && naturalLegalPerson == 'natural')">
+      <section v-if="(currentStep == '2' && naturalLegalPerson == 'natural') || (currentStep == '4' && naturalLegalPerson == 'natural')" class="fade-in">
         <h2 v-show="currentStep == '2'">Pessoa física</h2>
         <div id="nome" class="form-input">
           <label>Nome</label>
@@ -277,12 +292,12 @@
         </div>
 
         <div  class="form-input form-buttons" v-show="currentStep == '2'">
-          <button class="back-button" @click="currentStep = 1">Voltar</button>
+          <button class="back-button" @click="returnStep('1')">Voltar</button>
           <button type="button" @click="validateStep2">Continuar</button>
         </div>
       </section>
 
-      <section v-if="(currentStep == '2' && naturalLegalPerson == 'legal') || (currentStep == '4' && naturalLegalPerson == 'legal')">
+      <section v-if="(currentStep == '2' && naturalLegalPerson == 'legal') || (currentStep == '4' && naturalLegalPerson == 'legal')" class="fade-in">
         <h2 v-show="currentStep == '2'">Pessoa jurídica</h2>
         <div id="nome" class="form-input">
           <label>Razão social</label>
@@ -306,12 +321,12 @@
         </div>
 
         <div  class="form-input form-buttons" v-show="currentStep == '2'">
-          <button class="back-button" @click="currentStep = 1">Voltar</button>
+          <button class="back-button" @click="returnStep('1')">Voltar</button>
           <button type="button" @click="validateStep2">Continuar</button>
         </div>
       </section>
 
-      <section v-if="currentStep == '3' || currentStep == '4'">
+      <section v-if="currentStep == '3' || currentStep == '4'" class="fade-in">
         <h2 v-show="currentStep == '3'">Senha de acesso</h2>
         <div id="nome" class="form-input">
           <label>Sua senha</label>
@@ -320,12 +335,12 @@
         </div>
 
         <div class="form-input form-buttons" v-show="currentStep == '3'">
-          <button class="back-button" @click="currentStep = 2">Voltar</button>
+          <button class="back-button" @click="returnStep('2')">Voltar</button>
           <button type="button" @click="validateStep3">Continuar</button>
         </div>
 
         <div class="form-input form-buttons" v-show="currentStep == '4'">
-          <button type="button" class="back-button" @click="currentStep = 3">Voltar</button>
+          <button type="button" class="back-button" @click="returnStep('3')">Voltar</button>
           <button type="button" @click="registerData">Cadastrar</button>
         </div>
 
