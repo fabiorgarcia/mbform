@@ -37,12 +37,12 @@
 
 
   onMounted (async ()=>{
+    setTimeout(closeLoading, 1500)
     await fetch("http://localhost:3000/api/services")
     .then(res => res.json())
     .then(res => {
       resdata =  res
       console.log(resdata)
-      setTimeout(closeLoading, 1500)
     })
   })
 
@@ -182,6 +182,7 @@
 
     if (!emailError.value && !naturallegalPersonError.value && !nameError.value && !cpfError.value && !birthError.value && !telephoneError.value && !corporateError.value && !cnpjError.value && !openingError.value && !telephoneCorporateError.value && !passwordError.value ) {
       loadingData.value = true;
+      setTimeout(loadingSuces, 4000)
 
       fetch('http://localhost:3000/api/services', {
         method: 'POST',
@@ -205,7 +206,6 @@
         .then(res => res.json())
         .then(data => {
           console.log(data)
-          setTimeout(loadingSuces, 4000)
         })
         .catch(error => {
         console.log(error)
